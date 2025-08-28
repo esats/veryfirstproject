@@ -7,6 +7,9 @@ public class NewMonoBehaviourScript : MonoBehaviour
     [SerializeField] private KeyCode _jumpKey;
     [SerializeField] private float _jumpForce;
     [SerializeField] private bool _canJump;
+    [SerializeField] private float _jumpCoolDown;
+    [SerializeField] private float _playerHeight;
+    [SerializeField] private LayerMask _groundLayer;
 
     private Rigidbody _playerRigidbody;
     private float _horizontalInput, _verticalInput;
@@ -33,10 +36,11 @@ public class NewMonoBehaviourScript : MonoBehaviour
         _horizontalInput = Input.GetAxis("Horizontal");
         _verticalInput = Input.GetAxis("Vertical");
 
-        if (Input.GetKey(_jumpKey) && _canJump)
+        if (Input.GetKey(_jumpKey) && _canJump && IsGrounded())
         {
             _canJump = false;
             SetPlayerJumping();
+            Invoke(nameof(ResetJumping), _jumpCoolDown);
         }
     }
 
@@ -47,10 +51,20 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
         _playerRigidbody.AddForce(_movementDirection.normalized * _movementSpeed, ForceMode.Force);
     }
-    
+
     private void SetPlayerJumping()
     {
-        _playerRigidbody.linearVelocity = new Vector3(_playerRigidbody.linearVelocity.x, 0f, _playerRigidbody.linearVelocity.z);                     
-        _playerRigidbody.AddForce(transform.up * _jumpForce, ForceMode.Impulse);                     
+        _playerRigidbody.linearVelocity = new Vector3(_playerRigidbody.linearVelocity.x, 0f, _playerRigidbody.linearVelocity.z);
+        _playerRigidbody.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
+    }
+
+    private void ResetJumping()
+    {
+        _canJump = true;
+    }
+
+    private bool IsGrounded()
+    {
+        return Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + 0.2f, _groundLayer);
     }
 }

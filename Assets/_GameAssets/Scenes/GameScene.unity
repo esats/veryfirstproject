@@ -352,7 +352,7 @@ GameObject:
   - component: {fileID: 147896453}
   - component: {fileID: 147896452}
   m_Layer: 0
-  m_Name: Floor
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1882,7 +1882,13 @@ MonoBehaviour:
   _orientationTransform: {fileID: 244691678}
   _movementSpeed: 14
   _jumpKey: 32
-  _jumpForce: 9
+  _jumpForce: 2
+  _canJump: 0
+  _jumpCoolDown: 0.5
+  _playerHeight: 1
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &118211507687167933
 GameObject:
   m_ObjectHideFlags: 0
